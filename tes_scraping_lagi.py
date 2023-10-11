@@ -1,6 +1,9 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from bs4 import BeautifulSoup
 import pandas as pandas
 import time
@@ -9,9 +12,23 @@ opsi = webdriver.ChromeOptions()
 opsi.add_argument('--headless')
 servis = Service('chromedriver.exe')
 driver = webdriver.Chrome(service=servis, options=opsi)
-link = "https://shopee.co.id/Kaos-Polos-col.3971528"
+
+link_login = "https://shopee.co.id/buyer/login"
+
+input_user = "user"
+input_password = "password"
+
+
+driver.get(link_login)
+element = WebDriverWait(driver, 25).until(EC.presence_of_element_located((By.NAME,"loginKey")))
+driver.find_element(By.NAME,"loginKey").send_keys(input_user)
+driver.find_element(By.NAME,"password").send_keys(input_password)
+driver.find_element(By.XPATH, "//button[@class='wyhvVD _1EApiB hq6WM5 L-VL8Q cepDQ1 _7w24N1']").click()
+
+
+link_scrap = "https://shopee.co.id/Kaos-Polos-col.3971528"
 driver.set_window_size(1300,800)
-driver.get(link)
+driver.get(link_scrap)
 
 ##selenium auto scroll
 scroll_ms = 500
@@ -97,19 +114,11 @@ CREATE TABLE IF NOT EXISTS data_tes (
 cursor.execute(buat_table)
 
 for index, row in df.iterrows():
-    insert_query = "INSERT INTO data_tes (Nama, Harga, Terjual, Lokasi, Link) VALUES (%s, %s, %s, %s, %s)"
+    insert_query = "INSERT INTO data_tes IF NOT EXISTS (Nama, Harga, Terjual, Lokasi, Link) VALUES (%s, %s, %s, %s, %s)"
     cursor.execute(insert_query, (row.Nama, row.Harga, row.Terjual, row.Lokasi, row.Link))
 
 # Commit perubahan pada tabel dan tutup kursor
 conn.commit()
 cursor.close()
 
-# tabel_mysql = "data_tes"
-
-# engine = create_engine('mysql+pymysql://root:@localhost/tes_scraping', echo=False)
-# tabel_mysql = "data_tes"
-# df.to_sql(name=tabel_mysql, con=engine, if_exists='replace', index=False)
-
-# # Commit perubahan dan tutup koneksi
-# conn.commit()
 conn.close()
