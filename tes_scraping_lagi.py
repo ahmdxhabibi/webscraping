@@ -11,7 +11,8 @@ import time
 opsi = webdriver.ChromeOptions()
 opsi.add_argument('--headless')
 servis = Service('chromedriver.exe')
-driver = webdriver.Chrome(service=servis, options=opsi)
+# driver = webdriver.Chrome(service=servis, options=opsi)
+driver = webdriver.Chrome(service=servis)
 
 link_login = "https://shopee.co.id/buyer/login"
 
