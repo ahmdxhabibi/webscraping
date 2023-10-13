@@ -6,14 +6,14 @@ from selenium.webdriver.chrome.service import Service
 import telepot
 
 def send_image(img):
-    token = "6645683879:AAGpZ7C3IhyjS4iKhr4wOFODcBRul2N30EQ"
-    chat_id = "687165125"
+    token = ""
+    chat_id = ""
     bot = telepot.Bot(token)
     bot.sendPhoto(chat_id, photo=open(img, 'rb'))
 
 input_user = "user"
 input_password = "password"
-link = "https://ecourt.mahkamahagung.go.id/Login/index/CAPTCHA"
+link = ""
 captcha_ = "captcha1.png"
 
 servis = Service('chromedriver.exe')
